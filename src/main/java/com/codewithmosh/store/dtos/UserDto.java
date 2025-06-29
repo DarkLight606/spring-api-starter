@@ -13,10 +13,5 @@ import java.time.LocalDateTime;
 public class UserDto {
     private Long id;
     private String name;
-    //@JsonInclude(JsonInclude.Include.NON_NULL) - exclude null rows
-    //@JsonIgnore - ignore row
-    //@JsonProperty - assign new name
     private String email;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
 }
