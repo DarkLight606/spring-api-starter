@@ -14,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
+
 @Table(name = "users")
 public class User {
     @Id
@@ -48,6 +49,7 @@ public class User {
     private Profile profile;
 
     @ManyToMany
+    @Builder.Default
     @JoinTable(
         name = "wishlist",
         joinColumns = @JoinColumn(name = "user_id"),
