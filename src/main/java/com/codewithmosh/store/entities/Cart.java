@@ -16,12 +16,12 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private UUID uuid;
+    private UUID id;
 
     // tell hibernate to ignore this field when generating sql statements
-    @Column(name = "dateCreated", insertable = false, updatable = false)
+    @Column(name = "date_created", insertable = false, updatable = false)
     private Date dateCreated;
 
-    @OneToMany
-    private Set<Product> productsInCart = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.MERGE)
+    private Set<CartItem> productsInCart = new LinkedHashSet<>();
 }
