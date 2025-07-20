@@ -70,16 +70,6 @@ public class CartService {
         return cartMapper.toDto(cartItem);
     }
 
-    public void clearCart(UUID cartId) {
-        var cart = cartRepository.findCartWithItems(cartId).orElse(null);
-        if (cart == null) {
-            throw new CartNotFoundException();
-        }
-
-        cart.clearItems();
-        cartRepository.save(cart);
-    }
-
     public void removeItem(UUID cartId, Long productId) {
         var cart = cartRepository.findCartWithItems(cartId).orElse(null);
         if (cart == null) {
@@ -87,6 +77,16 @@ public class CartService {
         }
 
         cart.removeItem(productId);
+        cartRepository.save(cart);
+    }
+
+    public void clearCart(UUID cartId) {
+        var cart = cartRepository.findCartWithItems(cartId).orElse(null);
+        if (cart == null) {
+            throw new CartNotFoundException();
+        }
+
+        cart.clearItems();
         cartRepository.save(cart);
     }
 }
