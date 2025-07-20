@@ -1,23 +1,28 @@
 package com.codewithmosh.store.controllers;
 
 import com.codewithmosh.store.dtos.ValidateUserRequest;
-import com.codewithmosh.store.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
-    private final AuthService authService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
     public ResponseEntity<Void> validateUser(
             @Valid @RequestBody ValidateUserRequest request
     ) {
-        authService.validateUser(request.getEmail(), request.getPassword());
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(), request.getPassword()
+                )
+        );
         return ResponseEntity.ok().build();
     }
 }
