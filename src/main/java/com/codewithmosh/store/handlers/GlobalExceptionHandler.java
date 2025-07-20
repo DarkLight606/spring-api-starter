@@ -1,4 +1,4 @@
-package com.codewithmosh.store.controllers;
+package com.codewithmosh.store.handlers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
