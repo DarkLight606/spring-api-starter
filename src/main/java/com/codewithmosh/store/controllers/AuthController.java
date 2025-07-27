@@ -30,4 +30,11 @@ public class AuthController {
         var token = jwtService.generateJwtToken(request.getEmail());
         return ResponseEntity.ok(new JwtResponse(token));
     }
+
+    @PostMapping("/validate")
+    public boolean validateToken(@RequestHeader("Authorization") String authHeader) {
+        var token = authHeader.replace("Bearer ", "");
+
+        return jwtService.validateJwtToken(token);
+    }
 }
