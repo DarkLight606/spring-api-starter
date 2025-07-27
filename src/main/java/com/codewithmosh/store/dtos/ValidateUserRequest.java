@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ValidateUserRequest {
     @NotBlank
-            @Email
+    @Email
     String email;
     @NotBlank
     String password;

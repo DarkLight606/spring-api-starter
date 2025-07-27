@@ -24,7 +24,7 @@ public class AuthController {
     private final UserMapper userMapper;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> validateUser(
+    public ResponseEntity<?> validateUser(
             @Valid @RequestBody ValidateUserRequest request
     ) {
         authenticationManager.authenticate(
@@ -33,7 +33,9 @@ public class AuthController {
                 )
         );
 
-        var token = jwtService.generateJwtToken(request.getEmail());
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+
+        var token = jwtService.generateJwtToken(user);
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
@@ -49,9 +51,9 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<UserDto> me() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        var email = (String) authentication.getPrincipal();
+        var id = (Long) authentication.getPrincipal();
 
-        var user = userRepository.findByEmail(email).orElse(null);
+        var user = userRepository.findById(id).orElse(null);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
