@@ -31,37 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Environment files
 /.env
-/spring-api-starter.git/filter-repo/already_ran
-/spring-api-starter.git/hooks/applypatch-msg.sample
-/spring-api-starter.git/filter-repo/changed-refs
-/spring-api-starter.git/objects/info/commit-graph
-/spring-api-starter.git/filter-repo/commit-map
-/spring-api-starter.git/hooks/commit-msg.sample
-/spring-api-starter.git/config
-/spring-api-starter.git/description
-/spring-api-starter.git/info/exclude
-/spring-api-starter.git/filter-repo/first-changed-commits
-/spring-api-starter.git/hooks/fsmonitor-watchman.sample
-/spring-api-starter.git/HEAD
-/spring-api-starter.git/refs/remotes/origin/main
-/spring-api-starter.git/objects/pack/pack-105897d59cb878f7581c88f0f8aa50275baed1b4.bitmap
-/spring-api-starter.git/objects/pack/pack-105897d59cb878f7581c88f0f8aa50275baed1b4.idx
-/spring-api-starter.git/objects/pack/pack-105897d59cb878f7581c88f0f8aa50275baed1b4.pack
-/spring-api-starter.git/objects/pack/pack-105897d59cb878f7581c88f0f8aa50275baed1b4.rev
-/spring-api-starter.git/packed-refs
-/spring-api-starter.git/objects/info/packs
-/spring-api-starter.git/hooks/post-update.sample
-/spring-api-starter.git/hooks/pre-applypatch.sample
-/spring-api-starter.git/hooks/pre-commit.sample
-/spring-api-starter.git/hooks/pre-merge-commit.sample
-/spring-api-starter.git/hooks/pre-push.sample
-/spring-api-starter.git/hooks/pre-rebase.sample
-/spring-api-starter.git/hooks/pre-receive.sample
-/spring-api-starter.git/hooks/prepare-commit-msg.sample
-/spring-api-starter.git/hooks/push-to-checkout.sample
-/spring-api-starter.git/filter-repo/ref-map
-/spring-api-starter.git/info/refs
-/spring-api-starter.git/hooks/sendemail-validate.sample
-/spring-api-starter.git/filter-repo/suboptimal-issues
-/spring-api-starter.git/hooks/update.sample
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Old documentation
+README_OLD.md
