@@ -2,12 +2,32 @@ spring:
   application:
     name: store
   datasource:
-    url: jdbc:mysql://localhost:3306/store_api?createDatabaseIfNotExist=true
-    username: root
-    password: denchik911
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:store_api}?createDatabaseIfNotExist=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
   jpa:
-    show-sql: true
+    show-sql: ${SHOW_SQL:false}
+    hibernate:
+      ddl-auto: validate
   jwt:
     secret: ${JWT_SECRET}
-    accessTokenExpiration: 300 # 5m
-    refreshTokenExpiration: 604800 # 7d
+    accessTokenExpiration: ${ACCESS_TOKEN_EXPIRATION:300} # 5m
+    refreshTokenExpiration: ${REFRESH_TOKEN_EXPIRATION:604800} # 7d
+
+# Logging configuration
+logging:
+  level:
+    com.codewithmosh.store: ${LOG_LEVEL:INFO}
+    org.springframework.security: ${SECURITY_LOG_LEVEL:WARN}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Management endpoints for health checks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
