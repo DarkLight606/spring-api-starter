@@ -1,7 +1,7 @@
 package com.codewithmosh.store.services;
 
 import com.codewithmosh.store.config.JwtConfig;
-import com.codewithmosh.store.entities.Role;
+import com.codewithmosh.store.entities.Jwt;
 import com.codewithmosh.store.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -16,42 +16,36 @@ import java.util.Date;
 public class JwtService {
     private final JwtConfig config;
 
-    public String generateAccessToken(User user) {
+    public Jwt generateAccessToken(User user) {
         return generateToken(user, config.getAccessTokenExpiration());
     }
-    public String generateRefreshToken(User user) {
+
+    public Jwt generateRefreshToken(User user) {
         return generateToken(user, config.getRefreshTokenExpiration());
     }
 
-
-    private String generateToken(User user, long tokenExpiration) {
-        return Jwts.builder()
-                .subject(String.valueOf(user.getId()))
-                .claim("name", user.getName())
-                .claim("email", user.getEmail())
-                .claim("role", user.getRole())
+    private Jwt generateToken(User user, long tokenExpiration) {
+        var claims = Jwts.claims()
+                .subject(user.getId().toString())
+                .add("email", user.getEmail())
+                .add("name", user.getName())
+                .add("role", user.getRole())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
-                .signWith(config.getSecretKey())
-                .compact();
+                .build();
+
+        return new Jwt(claims, config.getSecretKey());
     }
 
-    public boolean validateJwtToken(String token) {
+    public Jwt parseToken(String token) {
         try {
             var claims = getClaims(token);
-            return claims.getExpiration().after(new Date());
-        } catch (JwtException ex) {
-            return false;
+            return new Jwt(claims, config.getSecretKey());
+        } catch (JwtException | IllegalArgumentException e) {
+            return null;
         }
     }
 
-    public Long getIdFromJwtToken(String token) {
-        return Long.valueOf(getClaims(token).getSubject());
-    }
-
-    public Role getRoleFromJwtToken(String token) {
-        return Role.valueOf(getClaims(token).get("role", String.class));
-    }
 
     private Claims getClaims(String token) {
         return Jwts.parser()

@@ -40,8 +40,8 @@ public class AuthController {
 
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
 
-        var accessToken = jwtService.generateAccessToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var accessToken = jwtService.generateAccessToken(user).toString();
+        var refreshToken = jwtService.generateRefreshToken(user).toString();
 
         var cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
@@ -57,13 +57,15 @@ public class AuthController {
     public ResponseEntity<JwtResponse> refresh(
             @CookieValue(value = "refreshToken") String refreshToken
     ) {
-        if (!jwtService.validateJwtToken(refreshToken)) {
+        var jwt = jwtService.parseToken(refreshToken);
+
+
+        if (jwt == null || jwt.isExpired()) {
             return ResponseEntity.status(401).build();
         }
 
-        var userId = jwtService.getIdFromJwtToken(refreshToken);
-        var user = userRepository.findById(userId).orElseThrow();
-        var accessToken = jwtService.generateAccessToken(user);
+        var user = userRepository.findById(jwt.getUserId()).orElseThrow();
+        var accessToken = jwtService.generateAccessToken(user).toString();
 
         return ResponseEntity.ok(new JwtResponse(accessToken));
     }
